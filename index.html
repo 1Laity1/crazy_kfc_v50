@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>疯狂星期四</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- 引入QRCode.js库 -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcode.js@1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+    <!-- 动态背景 -->
+    <div class="bg-animation" id="bg-animation"></div>
+    
+    <div class="container">
+        <div class="image-container">
+            <img id="mood-image" src="图片/默认.jpg" alt="表情包">
+        </div>
+        
+        <div class="text-container">
+            <p id="text-content">今天星期四，兄dei，请我吃个肯德基呗~</p>
+        </div>
+        
+        <div class="buttons-container">
+            <button id="accept-btn">v我50</button>
+            <button id="reject-btn">拒绝</button>
+        </div>
+        
+        <div id="menu-container" class="hidden">
+            <div class="menu-content">
+                <h2>Q版菜单</h2>
+                <div class="menu-items">
+                    <!-- 菜单项将通过JavaScript动态添加 -->
+                </div>
+                <button id="close-menu">关闭</button>
+            </div>
+        </div>
+    </div>
+    
+    <button id="show-menu" class="menu-button">查看菜单</button>
+    <button id="share-btn" class="share-button">分享给朋友</button>
+    
+    <!-- 分享弹窗 -->
+    <div id="share-container" class="hidden">
+        <div class="share-content">
+            <h3>分享到微信</h3>
+            <p>保存图片，发送给好友或朋友圈</p>
+            <div class="qrcode-container">
+                <canvas id="share-canvas" width="300" height="400"></canvas>
+            </div>
+            <div class="share-buttons">
+                <button id="save-image">保存图片</button>
+                <button id="close-share">关闭</button>
+            </div>
+        </div>
+    </div>
+    
+    <audio id="background-music" loop>
+        <source src="音乐/默认.mp3" type="audio/mpeg">
+    </audio>
+    
+    <!-- 引入html2canvas库用于生成分享图片 -->
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <!-- 引入微信JS-SDK -->
+    <script src="https://res.wx.qq.com/open/js/jweixin-1.6.0.js"></script>
+    <script src="script.js"></script>
+</body>
+</html> 
