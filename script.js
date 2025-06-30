@@ -22,24 +22,24 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // 文案数组
     const rejectTexts = [
-        "不会吧不会吧，不会真有人拒绝请我吃KFC吧？",
-        "别这样嘛，看我可怜巴巴的眼神，我都饿成这样了",
-        "别问，问就是v我50，吃肯德基！",
-        "你忍心看我饿得两眼发黑，四肢无力，头晕目眩吗？",
-        "我们之间的友谊就值一顿KFC？太伤心了"
+        "告诉老默，我想吃肯德基了！！！",
+        "家人们听说了吗，最近KFC和vivo合作出了一款手机，叫肯德基疯狂星期四vivo50",
+        "疯狂星期四想不想搞大我的肚子（doge）",
+        "晚点我会在朋友圈里发一个50元的肯德基代付链接，大家注意抢",
+        "星期四是这样的，群友只需要v我50就可以了，而我要考虑的事情就多了"
     ];
     
-    const acceptText = "卧槽！真的假的？你竟然同意了！爱你爱你，mua~";
-    const finalRejectText = "算了算了，我还是去蹭我室友的泡面吧，呜呜呜";
+    const acceptText = "来财来";
+    const finalRejectText = "林北，我再说一次这里是麦当劳！没有疯狂星期四！";
     
     // 菜单项
     const menuData = [
-        { name: "香辣鸡腿堡", price: "¥19.9", color: "#ff9e80" },
-        { name: "吮指原味鸡", price: "¥12.5", color: "#ffcc80" },
-        { name: "波纹薯条", price: "¥9.9", color: "#ffe57f" },
-        { name: "葡式蛋挞", price: "¥8.0", color: "#fff59d" },
-        { name: "黄金鸡块", price: "¥11.5", color: "#dce775" },
-        { name: "劲爆鸡米花", price: "¥13.5", color: "#aed581" }
+        { name: "香辣鸡腿堡", price: "¥11.4", color: "#ff9e80" },
+        { name: "吮指原味鸡", price: "¥5.1", color: "#ffcc80" },
+        { name: "波纹薯条", price: "¥4.1", color: "#ffe57f" },
+        { name: "葡式蛋挞", price: "¥9.1", color: "#fff59d" },
+        { name: "黄金鸡块", price: "¥9.8", color: "#dce775" },
+        { name: "劲爆鸡米花", price: "¥1.0", color: "#aed581" }
     ];
     
     // 初始化按钮状态
@@ -303,6 +303,19 @@ document.addEventListener('DOMContentLoaded', function() {
                 window.autoMoveInterval = null;
             }
             
+            // 清理随机运动定时器
+            if (window.randomMotionInterval) {
+                clearInterval(window.randomMotionInterval);
+                window.randomMotionInterval = null;
+            }
+            
+            // 重置拒绝按钮位置和样式
+            const rejectBtn = document.getElementById('reject-btn');
+            rejectBtn.style.position = 'relative';
+            rejectBtn.style.left = 'auto';
+            rejectBtn.style.top = 'auto';
+            rejectBtn.style.transform = 'scale(1)';
+            
             // 禁用按钮
             disableButtons();
             
@@ -321,8 +334,19 @@ document.addEventListener('DOMContentLoaded', function() {
             rejectBtn._hideTimer = null;
         }
         
+        // 清理随机运动定时器
+        if (window.randomMotionInterval) {
+            clearInterval(window.randomMotionInterval);
+            window.randomMotionInterval = null;
+        }
+        
         // 确保按钮正确的文本内容
         acceptBtn.textContent = "v我50";
+        
+        // 确保接受按钮始终保持相对定位，不受任何影响
+        acceptBtn.style.position = 'relative';
+        acceptBtn.style.left = 'auto';
+        acceptBtn.style.top = 'auto';
         
         // 强制确保拒绝按钮可见且样式正确
         rejectBtn.style.display = 'block';
@@ -338,12 +362,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!rejectBtn.textContent || rejectBtn.textContent.trim() === '') {
             rejectBtn.textContent = '拒绝';
         }
-        
-        // 重置按钮位置为相对定位（取消之前可能设置的绝对定位）
-        // 现在所有情况都保持相对定位
-        rejectBtn.style.position = 'relative';
-        rejectBtn.style.left = 'auto';
-        rejectBtn.style.top = 'auto';
         
         // 重置transform和透明度（确保按钮始终可见）
         rejectBtn.style.transform = 'scale(1)';
@@ -362,6 +380,11 @@ document.addEventListener('DOMContentLoaded', function() {
             acceptBtn.style.transform = '';
             acceptBtn.style.boxShadow = '';
         }
+        
+        // 重置拒绝按钮位置为相对定位（第5次拒绝时会被覆盖）
+        rejectBtn.style.position = 'relative';
+        rejectBtn.style.left = 'auto';
+        rejectBtn.style.top = 'auto';
         
         switch(rejectCount) {
             case 1:
@@ -397,32 +420,29 @@ document.addEventListener('DOMContentLoaded', function() {
                 rejectBtn.textContent = "还是拒绝";
                 break;
             case 5:
-                // 拒绝按钮保持静止但有特效，更容易点击
-                rejectBtn.style.transform = "scale(1.0)"; // 保持正常大小，更容易点击
-                rejectBtn.style.opacity = "0.9"; // 高透明度，确保可见
+                // 确保接受按钮完全不受影响，保持之前的状态
                 acceptBtn.style.transform = "scale(1.2)";
                 acceptBtn.style.boxShadow = "0 0 20px rgba(228, 0, 43, 0.7)";
                 acceptBtn.classList.add('highlight-accept');
                 
-                // 修改拒绝按钮文字
+                // 拒绝按钮样式设置
+                rejectBtn.style.transform = "scale(1.0)";
+                rejectBtn.style.opacity = "0.9";
                 rejectBtn.textContent = "最后机会";
-                
-                // 移除抖动效果
-                rejectBtn.classList.remove('btn-shake');
-                
-                // 添加明显的边框和背景，让按钮更容易看到和点击
                 rejectBtn.style.border = "3px solid #ff0000";
                 rejectBtn.style.backgroundColor = "#ffebee";
                 rejectBtn.style.color = "#d32f2f";
                 rejectBtn.style.fontWeight = "bold";
                 
-                // 添加闪烁效果提醒用户
-                rejectBtn.style.animation = "blink 1s infinite";
+                // 设置为绝对定位以便随机移动
+                rejectBtn.style.position = 'absolute';
+                rejectBtn.style.zIndex = '10';
                 
-                // 确保按钮保持相对定位，不移动
-                rejectBtn.style.position = 'relative';
-                rejectBtn.style.left = 'auto';
-                rejectBtn.style.top = 'auto';
+                // 添加阴影效果提高可见性
+                rejectBtn.style.boxShadow = "0 4px 8px rgba(0,0,0,0.3)";
+                
+                // 启动局部随机运动
+                startRandomMotion(rejectBtn);
                 
                 break;
         }
@@ -464,6 +484,125 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }, 200);
         }
+    }
+    
+    // 启动按钮局部随机运动
+    function startRandomMotion(button) {
+        // 清理之前可能存在的运动定时器
+        if (window.randomMotionInterval) {
+            clearInterval(window.randomMotionInterval);
+        }
+        
+        // 获取按钮容器
+        const container = document.querySelector('.buttons-container');
+        const acceptBtn = document.getElementById('accept-btn');
+        
+        // 确保接受按钮完全不受影响，保持相对定位
+        acceptBtn.style.position = 'relative';
+        acceptBtn.style.left = 'auto';
+        acceptBtn.style.top = 'auto';
+        
+        // 不改变容器高度，使用现有空间
+        container.style.position = 'relative';
+        
+        // 获取容器和按钮的位置信息
+        const containerRect = container.getBoundingClientRect();
+        
+        // 定义拒绝按钮的运动区域（在其原始位置的右侧，避免与接受按钮重叠）
+        const motionArea = {
+            // 运动区域在容器右半部分
+            centerX: containerRect.width * 0.75, // 在容器右侧75%位置
+            centerY: 30, // 垂直居中
+            width: 120,  // 运动区域宽度
+            height: 60   // 运动区域高度
+        };
+        
+        // 计算运动边界
+        const bounds = {
+            minX: motionArea.centerX - motionArea.width / 2,
+            maxX: motionArea.centerX + motionArea.width / 2,
+            minY: motionArea.centerY - motionArea.height / 2,
+            maxY: motionArea.centerY + motionArea.height / 2
+        };
+        
+        // 确保边界在容器内
+        bounds.minX = Math.max(containerRect.width * 0.55, bounds.minX); // 不要太靠左
+        bounds.maxX = Math.min(containerRect.width - 20, bounds.maxX);
+        bounds.minY = Math.max(10, bounds.minY);
+        bounds.maxY = Math.min(80, bounds.maxY);
+        
+        // 初始位置设置在运动区域中心
+        let currentX = motionArea.centerX;
+        let currentY = motionArea.centerY;
+        
+        // 设置按钮初始位置
+        button.style.left = currentX - button.offsetWidth / 2 + 'px';
+        button.style.top = currentY - button.offsetHeight / 2 + 'px';
+        
+        // 运动参数（适中的速度，让用户有机会点击）
+        let velocityX = (Math.random() + 0.1) * 3; // 适中的初始速度
+        let velocityY = (Math.random() + 0.1) * 3;
+        const friction = 0.996; // 较小的阻力
+        const minSpeed = 5;  // 最小速度
+        const maxSpeed = 8;  // 最大速度（不要太快）
+        
+        // 开始随机运动
+        window.randomMotionInterval = setInterval(() => {
+            // 更新位置
+            currentX += velocityX;
+            currentY += velocityY;
+            
+            // 边界碰撞检测和反弹
+            if (currentX <= bounds.minX || currentX >= bounds.maxX) {
+                velocityX = -velocityX * 0.7; // 反弹
+                currentX = Math.max(bounds.minX, Math.min(bounds.maxX, currentX));
+                // 添加轻微随机性
+                velocityY += (Math.random() - 0.5) * 1;
+            }
+            
+            if (currentY <= bounds.minY || currentY >= bounds.maxY) {
+                velocityY = -velocityY * 0.7; // 反弹
+                currentY = Math.max(bounds.minY, Math.min(bounds.maxY, currentY));
+                // 添加轻微随机性
+                velocityX += (Math.random() - 0.5) * 1;
+            }
+            
+            // 应用阻力
+            velocityX *= friction;
+            velocityY *= friction;
+            
+            // 如果速度太小，给它一个温和的推力
+            const speed = Math.sqrt(velocityX * velocityX + velocityY * velocityY);
+            if (speed < minSpeed) {
+                const angle = Math.random() * Math.PI * 2;
+                const newSpeed = minSpeed + Math.random() * (maxSpeed - minSpeed);
+                velocityX = Math.cos(angle) * newSpeed;
+                velocityY = Math.sin(angle) * newSpeed;
+            }
+            
+            // 限制最大速度
+            if (speed > maxSpeed) {
+                velocityX = (velocityX / speed) * maxSpeed;
+                velocityY = (velocityY / speed) * maxSpeed;
+            }
+            
+            // 偶尔添加轻微的随机扰动
+            if (Math.random() < 0.06) {
+                velocityX += (Math.random() - 0.5) * 1.5;
+                velocityY += (Math.random() - 0.5) * 1.5;
+            }
+            
+            // 更新按钮位置
+            button.style.left = currentX - button.offsetWidth / 2 + 'px';
+            button.style.top = currentY - button.offsetHeight / 2 + 'px';
+            
+        }, 30); // 30ms间隔，适中的帧率
+        
+        // 鼠标悬停时添加轻微扰动（不要太强烈）
+        button.addEventListener('mouseenter', function addDisturbance() {
+            velocityX += (Math.random() - 0.5) * 3;
+            velocityY += (Math.random() - 0.5) * 3;
+        });
     }
     
     // 更改背景音乐
